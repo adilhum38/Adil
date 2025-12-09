@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
@@ -6,14 +7,15 @@ import FreelancerDirectory from './components/FreelancerDirectory';
 import Dashboard from './components/Dashboard';
 import Profile from './components/Profile';
 import Auth from './components/Auth';
+import CommunityFeed from './components/CommunityFeed';
 import { LanguageProvider } from './context/LanguageContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
 
 const MainApp: React.FC = () => {
+  // Changed default view to 'home' which now maps to CommunityFeed for a social-first experience
   const [currentView, setCurrentView] = useState<string>('home');
   const { isAuthenticated, user } = useAuth();
 
-  // Redirect to profile after login if user was on Auth page
   const handleAuthComplete = () => {
     setCurrentView('profile');
   };
@@ -21,12 +23,8 @@ const MainApp: React.FC = () => {
   const renderView = () => {
     switch (currentView) {
       case 'home':
-        return (
-          <Hero 
-            onFindWork={() => setCurrentView('jobs')} 
-            onFindTalent={() => setCurrentView('freelancers')} 
-          />
-        );
+        // The "Home" is now the Community Feed
+        return <CommunityFeed />;
       case 'jobs':
         return <JobBoard />;
       case 'freelancers':
@@ -38,7 +36,7 @@ const MainApp: React.FC = () => {
       case 'auth':
         return isAuthenticated ? <Profile /> : <Auth onComplete={handleAuthComplete} />;
       default:
-        return <Hero onFindWork={() => setCurrentView('jobs')} onFindTalent={() => setCurrentView('freelancers')} />;
+        return <CommunityFeed />;
     }
   };
 
@@ -46,6 +44,12 @@ const MainApp: React.FC = () => {
     <div className="min-h-screen bg-slate-50 flex flex-col">
       <Navbar currentView={currentView} setView={setCurrentView} />
       <main className="flex-grow">
+        {/* We keep Hero only if we are not on specific internal pages, or maybe move Hero to a landing page if not logged in. 
+            For now, let's keep it simple: if 'home', we show Feed. 
+            However, for first impression, maybe we want Hero -> then Feed.
+            Let's put Hero inside CommunityFeed conditionally or just above it? 
+            Actually, the prompt asked for a Feed. Let's make "Home" the Feed.
+        */}
         {renderView()}
       </main>
       

@@ -1,9 +1,11 @@
-import { Job, User, UserRole } from '../types';
-import { MOCK_FREELANCERS, MOCK_JOBS } from '../constants';
+
+import { Job, User, Post } from '../types';
+import { MOCK_FREELANCERS, MOCK_JOBS, MOCK_POSTS } from '../constants';
 
 // Keys for LocalStorage
 const USERS_KEY = 'fhkz_users';
 const JOBS_KEY = 'fhkz_jobs';
+const POSTS_KEY = 'fhkz_posts';
 const CURRENT_USER_KEY = 'fhkz_current_user';
 
 class MockDatabase {
@@ -18,6 +20,9 @@ class MockDatabase {
     if (!localStorage.getItem(JOBS_KEY)) {
       localStorage.setItem(JOBS_KEY, JSON.stringify(MOCK_JOBS));
     }
+    if (!localStorage.getItem(POSTS_KEY)) {
+      localStorage.setItem(POSTS_KEY, JSON.stringify(MOCK_POSTS));
+    }
   }
 
   getUsers(): User[] {
@@ -27,6 +32,11 @@ class MockDatabase {
 
   getJobs(): Job[] {
     const data = localStorage.getItem(JOBS_KEY);
+    return data ? JSON.parse(data) : [];
+  }
+
+  getPosts(): Post[] {
+    const data = localStorage.getItem(POSTS_KEY);
     return data ? JSON.parse(data) : [];
   }
 
@@ -53,9 +63,32 @@ class MockDatabase {
     localStorage.setItem(JOBS_KEY, JSON.stringify(jobs));
   }
 
+  createPost(post: Post): Post {
+    const posts = this.getPosts();
+    posts.unshift(post);
+    localStorage.setItem(POSTS_KEY, JSON.stringify(posts));
+    return post;
+  }
+
+  likePost(postId: string, userId: string): void {
+    const posts = this.getPosts();
+    const post = posts.find(p => p.id === postId);
+    if (post) {
+      // Toggle like logic simplified for mock
+      if (post.isLikedByCurrentUser) {
+        post.likes--;
+        post.isLikedByCurrentUser = false;
+      } else {
+        post.likes++;
+        post.isLikedByCurrentUser = true;
+      }
+      localStorage.setItem(POSTS_KEY, JSON.stringify(posts));
+    }
+  }
+
   login(email: string): User | null {
     const users = this.getUsers();
-    const user = users.find(u => u.email === email); // Simple mock login (no password check for ease of demo)
+    const user = users.find(u => u.email === email); 
     if (user) {
       localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
       return user;

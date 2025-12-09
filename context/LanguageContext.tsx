@@ -1,3 +1,4 @@
+
 import React, { createContext, useState, useContext, ReactNode } from 'react';
 
 export type Language = 'en' | 'kk' | 'ru';
@@ -11,7 +12,7 @@ interface LanguageContextType {
 const translations = {
   en: {
     nav: {
-      home: 'Home',
+      home: 'Community',
       jobs: 'Find Work',
       freelancers: 'Find Talent',
       dashboard: 'Market Stats',
@@ -40,6 +41,16 @@ const translations = {
       subtitle: "Connect with top-tier videographers, designers, and SMM specialists in Almaty, Astana, and beyond. The unified platform for the creative economy.",
       findTalent: "Find Talent",
       findWork: "Find Work"
+    },
+    community: {
+      feedTitle: "Community Feed",
+      whatsHappening: "What's happening in the creative world?",
+      post: "Post",
+      trendingTitle: "Top Specialists of the Week",
+      trendingSubtitle: "Trending based on activity",
+      loginToPost: "Log in to post updates",
+      projects: "projects",
+      follow: "Follow"
     },
     jobs: {
       headerTitle: "Creative Jobs in Kazakhstan",
@@ -83,6 +94,7 @@ const translations = {
       loading: "Loading market insights...",
       demandChart: "Demand vs Supply by Category",
       geoChart: "Freelancers by City",
+      seasonalChart: "Activity by Season (Projects)",
       avgRate: "Avg. Hourly Rate (Video)",
       activeProjects: "Active Projects",
       newFreelancers: "New Freelancers (This Week)",
@@ -103,7 +115,7 @@ const translations = {
   },
   kk: {
     nav: {
-      home: 'Басты бет',
+      home: 'Қауымдастық',
       jobs: 'Жұмыс',
       freelancers: 'Мамандар',
       dashboard: 'Статистика',
@@ -132,6 +144,16 @@ const translations = {
       subtitle: "Алматы, Астана және басқа қалалардағы үздік видеографтармен, дизайнерлермен және SMM мамандарымен байланысыңыз.",
       findTalent: "Маман іздеу",
       findWork: "Жұмыс іздеу"
+    },
+    community: {
+      feedTitle: "Қауымдастық Лентасы",
+      whatsHappening: "Креативті әлемде не жаңалық?",
+      post: "Жариялау",
+      trendingTitle: "Аптаның үздік мамандары",
+      trendingSubtitle: "Белсенділік бойынша трендте",
+      loginToPost: "Жазу үшін жүйеге кіріңіз",
+      projects: "жоба",
+      follow: "Жазылу"
     },
     jobs: {
       headerTitle: "Қазақстандағы Креативті Жұмыстар",
@@ -175,6 +197,7 @@ const translations = {
       loading: "Нарық деректері жүктелуде...",
       demandChart: "Сұраныс пен Ұсыныс",
       geoChart: "Қалалар бойынша мамандар",
+      seasonalChart: "Маусымдық белсенділік (Жобалар)",
       avgRate: "Орт. сағаттық баға (Видео)",
       activeProjects: "Белсенді жобалар",
       newFreelancers: "Жаңа мамандар (Осы аптада)",
@@ -195,7 +218,7 @@ const translations = {
   },
   ru: {
     nav: {
-      home: 'Главная',
+      home: 'Комьюнити',
       jobs: 'Работа',
       freelancers: 'Специалисты',
       dashboard: 'Статистика',
@@ -224,6 +247,16 @@ const translations = {
       subtitle: "Объединяем лучших видеографов, дизайнеров и SMM-специалистов в Алматы, Астане и по всей стране.",
       findTalent: "Найти специалиста",
       findWork: "Найти работу"
+    },
+    community: {
+      feedTitle: "Лента сообщества",
+      whatsHappening: "Что происходит в сфере креатива?",
+      post: "Опубликовать",
+      trendingTitle: "Топ специалисты недели",
+      trendingSubtitle: "В тренде по активности",
+      loginToPost: "Войдите, чтобы писать",
+      projects: "проектов",
+      follow: "Подписаться"
     },
     jobs: {
       headerTitle: "Креативные вакансии в Казахстане",
@@ -267,6 +300,7 @@ const translations = {
       loading: "Загрузка данных...",
       demandChart: "Спрос и Предложение",
       geoChart: "Фрилансеры по городам",
+      seasonalChart: "Активность по месяцам (Проекты)",
       avgRate: "Средняя ставка (Видео)",
       activeProjects: "Активные проекты",
       newFreelancers: "Новые фрилансеры (на этой неделе)",

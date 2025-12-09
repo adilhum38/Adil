@@ -1,3 +1,4 @@
+
 export enum UserRole {
   FREELANCER = 'FREELANCER',
   CLIENT = 'CLIENT'
@@ -47,8 +48,8 @@ export interface User {
   id: string;
   name: string;
   username: string;
-  email: string; // Added for auth
-  password?: string; // Added for auth simulation
+  email: string;
+  password?: string;
   role: UserRole;
   avatar: string;
   title?: string;
@@ -75,7 +76,20 @@ export interface Job {
   city: City;
   postedAt: string;
   requiredSkills: string[];
-  authorId?: string; // Link job to a specific user/client
+  authorId?: string;
+}
+
+export interface Post {
+  id: string;
+  authorId: string;
+  authorName: string;
+  authorAvatar: string;
+  authorUsername: string;
+  content: string;
+  likes: number;
+  comments: number;
+  createdAt: string; // ISO date
+  isLikedByCurrentUser?: boolean;
 }
 
 export interface StatData {

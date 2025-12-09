@@ -1,4 +1,5 @@
-import { Category, City, Job, User, UserRole } from './types';
+
+import { Category, City, Job, Post, User, UserRole } from './types';
 
 export const APP_NAME = "Freelance Hub KZ";
 export const CURRENCY_SYMBOL = "₸";
@@ -146,4 +147,43 @@ export const MOCK_FREELANCERS: User[] = [
         { id: 'r4', reviewerName: 'Gulnara S.', reviewerAvatar: 'https://ui-avatars.com/api/?name=GS', rating: 5, text: 'Elena saved our launch. Her targeting strategy is gold.', date: '1 month ago' }
     ]
   }
+];
+
+export const MOCK_POSTS: Post[] = [
+    {
+        id: 'post1',
+        authorId: 'f1',
+        authorName: 'Aisulu Yerlanova',
+        authorUsername: '@aisulu.design',
+        authorAvatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+        content: 'Just finished a huge branding project for a fintech startup in Almaty! 🚀 The creative scene here is exploding right now. Anyone else feeling the end-of-year rush? #design #almaty',
+        likes: 24,
+        comments: 5,
+        createdAt: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(), // 2 hours ago
+        isLikedByCurrentUser: false
+    },
+    {
+        id: 'post2',
+        authorId: 'f2',
+        authorName: 'Timur Aliev',
+        authorUsername: '@timur_cuts',
+        authorAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+        content: 'Quick tip for mobileographers: The new CapCut update has amazing noise reduction. Saved my shoot yesterday during the event at Rixos. 🎥',
+        likes: 45,
+        comments: 12,
+        createdAt: new Date(Date.now() - 1000 * 60 * 60 * 5).toISOString(), // 5 hours ago
+        isLikedByCurrentUser: true
+    },
+    {
+        id: 'post3',
+        authorId: 'f3',
+        authorName: 'Elena Kim',
+        authorUsername: '@elena.smm.kz',
+        authorAvatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+        content: 'Looking for a junior copywriter to join my team for a project. Remote work, flexible hours. DM me if interested! 📝',
+        likes: 18,
+        comments: 8,
+        createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(), // 1 day ago
+        isLikedByCurrentUser: false
+    }
 ];
