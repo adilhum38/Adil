@@ -110,7 +110,16 @@ const translations = {
       skills: "Skills",
       email: "Email",
       phone: "Phone",
-      save: "Save Changes"
+      save: "Save Changes",
+      portfolio: "Portfolio Management",
+      addItem: "Add Project",
+      projectTitle: "Project Title",
+      projectType: "Content Type",
+      projectUrl: "Image/Video URL",
+      remove: "Remove",
+      image: "Image",
+      video: "Video",
+      noItems: "Your portfolio is empty. Add your first work!"
     }
   },
   kk: {
@@ -213,7 +222,16 @@ const translations = {
       skills: "Дағдылар",
       email: "Email",
       phone: "Телефон",
-      save: "Сақтау"
+      save: "Сақтау",
+      portfolio: "Портфолионы басқару",
+      addItem: "Жоба қосу",
+      projectTitle: "Жоба атауы",
+      projectType: "Мазмұн түрі",
+      projectUrl: "Сурет/Видео сілтемесі",
+      remove: "Өшіру",
+      image: "Сурет",
+      video: "Видео",
+      noItems: "Портфолиоңыз бос. Бірінші жұмысыңызды қосыңыз!"
     }
   },
   ru: {
@@ -316,7 +334,16 @@ const translations = {
       skills: "Навыки",
       email: "Email",
       phone: "Телефон",
-      save: "Сохранить"
+      save: "Сохранить",
+      portfolio: "Управление портфолио",
+      addItem: "Добавить проект",
+      projectTitle: "Название проекта",
+      projectType: "Тип контента",
+      projectUrl: "URL картинки/видео",
+      remove: "Удалить",
+      image: "Картинка",
+      video: "Видео",
+      noItems: "Ваше портфолио пусто. Добавьте свою первую работу!"
     }
   }
 };
