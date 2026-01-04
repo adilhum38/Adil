@@ -1,9 +1,10 @@
 
 import React, { useState } from 'react';
-import { Menu, X, Briefcase, Users, BarChart2, LogIn, LogOut, Home } from 'lucide-react';
+import { Menu, X, Briefcase, Users, BarChart2, LogIn, LogOut, Home, Sun, Moon } from 'lucide-react';
 import { APP_NAME } from '../constants';
 import { useLanguage, Language } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 
 interface NavbarProps {
   currentView: string;
@@ -13,6 +14,7 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({ currentView, setView }) => {
   const { language, setLanguage, t } = useLanguage();
   const { isAuthenticated, logout, user } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navItems = [
@@ -34,7 +36,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentView, setView }) => {
   };
 
   return (
-    <nav className="sticky top-0 z-50 bg-white border-b border-slate-200 shadow-sm">
+    <nav className="sticky top-0 z-50 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 shadow-sm transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center cursor-pointer" onClick={() => handleNavClick('home')}>
@@ -42,7 +44,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentView, setView }) => {
               <div className="w-8 h-8 bg-emerald-600 rounded-lg flex items-center justify-center mr-2">
                 <span className="text-white font-bold text-xl">F</span>
               </div>
-              <span className="font-bold text-xl tracking-tight text-slate-800">{APP_NAME}</span>
+              <span className="font-bold text-xl tracking-tight text-slate-800 dark:text-slate-100">{APP_NAME}</span>
             </div>
           </div>
 
@@ -54,8 +56,8 @@ const Navbar: React.FC<NavbarProps> = ({ currentView, setView }) => {
                 onClick={() => setView(item.id)}
                 className={`flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-150 ${
                   currentView === item.id
-                    ? 'text-emerald-600 bg-emerald-50'
-                    : 'text-slate-600 hover:text-emerald-600 hover:bg-slate-50'
+                    ? 'text-emerald-600 bg-emerald-50 dark:bg-emerald-950/30'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-slate-50 dark:hover:bg-slate-800'
                 }`}
               >
                 {item.icon}
@@ -64,16 +66,16 @@ const Navbar: React.FC<NavbarProps> = ({ currentView, setView }) => {
             ))}
 
             {isAuthenticated && user ? (
-                <div className="flex items-center space-x-3 pl-4 border-l border-slate-200">
+                <div className="flex items-center space-x-3 pl-4 border-l border-slate-200 dark:border-slate-700">
                      <button
                         onClick={() => setView('profile')}
                         className={`flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-150 ${
                         currentView === 'profile'
-                            ? 'text-emerald-600 bg-emerald-50'
-                            : 'text-slate-600 hover:text-emerald-600 hover:bg-slate-50'
+                            ? 'text-emerald-600 bg-emerald-50 dark:bg-emerald-950/30'
+                            : 'text-slate-600 dark:text-slate-400 hover:text-emerald-600 hover:bg-slate-50'
                         }`}
                     >
-                        <img src={user.avatar} alt="Avatar" className="w-6 h-6 rounded-full object-cover ring-1 ring-slate-200"/>
+                        <img src={user.avatar} alt="Avatar" className="w-6 h-6 rounded-full object-cover ring-1 ring-slate-200 dark:ring-slate-700"/>
                         <span>{t('nav.profile')}</span>
                     </button>
                     <button onClick={logout} className="text-slate-400 hover:text-red-500 p-2 transition-colors">
@@ -90,15 +92,24 @@ const Navbar: React.FC<NavbarProps> = ({ currentView, setView }) => {
                 </button>
             )}
 
-            <div className="flex items-center ml-2 border-l border-slate-200 pl-4 space-x-1">
+            <div className="flex items-center ml-2 border-l border-slate-200 dark:border-slate-700 pl-4 space-x-1">
+                {/* Theme Toggle */}
+                <button 
+                  onClick={toggleTheme}
+                  className="p-2 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors mr-2"
+                  aria-label="Toggle Theme"
+                >
+                  {theme === 'light' ? <Moon size={18} /> : <Sun size={18} className="text-amber-400" />}
+                </button>
+
                 {languages.map((lang) => (
                     <button
                         key={lang.code}
                         onClick={() => setLanguage(lang.code)}
                         className={`text-xs font-bold px-2 py-1 rounded transition-colors ${
                             language === lang.code 
-                            ? 'bg-slate-900 text-white' 
-                            : 'text-slate-500 hover:bg-slate-100'
+                            ? 'bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900' 
+                            : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800'
                         }`}
                     >
                         {lang.label}
@@ -108,10 +119,16 @@ const Navbar: React.FC<NavbarProps> = ({ currentView, setView }) => {
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="md:hidden flex items-center">
+          <div className="md:hidden flex items-center space-x-2">
+            <button 
+              onClick={toggleTheme}
+              className="p-2 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            >
+              {theme === 'light' ? <Moon size={20} /> : <Sun size={20} className="text-amber-400" />}
+            </button>
             <button 
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="text-slate-500 p-2"
+              className="text-slate-500 dark:text-slate-400 p-2"
             >
               {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
@@ -121,24 +138,26 @@ const Navbar: React.FC<NavbarProps> = ({ currentView, setView }) => {
 
       {/* Mobile Nav Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-white border-b border-slate-200 animate-in slide-in-from-top duration-200">
+        <div className="md:hidden bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 animate-in slide-in-from-top duration-200">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             {navItems.map((item) => (
               <button
                 key={item.id}
                 onClick={() => handleNavClick(item.id)}
                 className={`flex items-center space-x-3 w-full px-3 py-3 rounded-md text-base font-medium ${
-                  currentView === item.id ? 'bg-emerald-50 text-emerald-600' : 'text-slate-600'
+                  currentView === item.id 
+                    ? 'bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400' 
+                    : 'text-slate-600 dark:text-slate-400'
                 }`}
               >
                 {item.icon}
                 <span>{item.label}</span>
               </button>
             ))}
-            <hr className="my-2 border-slate-100" />
+            <hr className="my-2 border-slate-100 dark:border-slate-800" />
             {isAuthenticated ? (
               <>
-                <button onClick={() => handleNavClick('profile')} className="flex items-center space-x-3 w-full px-3 py-3 text-slate-600 text-base font-medium">
+                <button onClick={() => handleNavClick('profile')} className="flex items-center space-x-3 w-full px-3 py-3 text-slate-600 dark:text-slate-400 text-base font-medium">
                   <img src={user?.avatar} className="w-6 h-6 rounded-full" alt="Me" />
                   <span>{t('nav.profile')}</span>
                 </button>
@@ -148,17 +167,21 @@ const Navbar: React.FC<NavbarProps> = ({ currentView, setView }) => {
                 </button>
               </>
             ) : (
-              <button onClick={() => handleNavClick('auth')} className="flex items-center space-x-3 w-full px-3 py-3 text-emerald-600 text-base font-medium">
+              <button onClick={() => handleNavClick('auth')} className="flex items-center space-x-3 w-full px-3 py-3 text-emerald-600 dark:text-emerald-400 text-base font-medium">
                 <LogIn size={18} />
                 <span>{t('nav.login')}</span>
               </button>
             )}
-            <div className="flex space-x-4 p-3 border-t border-slate-100 mt-2">
+            <div className="flex space-x-4 p-3 border-t border-slate-100 dark:border-slate-800 mt-2">
               {languages.map((lang) => (
                 <button
                   key={lang.code}
                   onClick={() => { setLanguage(lang.code); setMobileMenuOpen(false); }}
-                  className={`text-sm font-bold px-3 py-1 rounded ${language === lang.code ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-500'}`}
+                  className={`text-sm font-bold px-3 py-1 rounded ${
+                    language === lang.code 
+                      ? 'bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900' 
+                      : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400'
+                  }`}
                 >
                   {lang.label}
                 </button>

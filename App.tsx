@@ -10,6 +10,7 @@ import Auth from './components/Auth';
 import CommunityFeed from './components/CommunityFeed';
 import { LanguageProvider } from './context/LanguageContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { ThemeProvider, useTheme } from './context/ThemeContext';
 
 const MainApp: React.FC = () => {
   const [currentView, setCurrentView] = useState<string>('home');
@@ -47,13 +48,13 @@ const MainApp: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col transition-colors duration-300">
       <Navbar currentView={currentView} setView={setCurrentView} />
       <main className="flex-grow">
         {renderView()}
       </main>
       
-      <footer className="bg-white border-t border-slate-200 mt-auto">
+      <footer className="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 mt-auto transition-colors duration-300">
         <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 md:flex md:items-center md:justify-between lg:px-8">
           <div className="flex justify-center space-x-6 md:order-2">
             <a href="#" className="text-slate-400 hover:text-pink-500 transition-colors">
@@ -65,7 +66,7 @@ const MainApp: React.FC = () => {
           </div>
           <div className="mt-8 md:mt-0 md:order-1">
             <p className="text-center text-base text-slate-400">
-              &copy; 2025 Freelance Hub KZ. Developer: <span className="text-slate-700 font-bold">Adil Boranbayev</span>. Made in Almaty.
+              &copy; 2025 Freelance Hub KZ. Developer: <span className="text-slate-700 dark:text-slate-300 font-bold">Adil Boranbayev</span>. Made in Almaty.
             </p>
           </div>
         </div>
@@ -76,11 +77,13 @@ const MainApp: React.FC = () => {
 
 const App: React.FC = () => {
   return (
-    <LanguageProvider>
-      <AuthProvider>
-        <MainApp />
-      </AuthProvider>
-    </LanguageProvider>
+    <ThemeProvider>
+      <LanguageProvider>
+        <AuthProvider>
+          <MainApp />
+        </AuthProvider>
+      </LanguageProvider>
+    </ThemeProvider>
   );
 }
 

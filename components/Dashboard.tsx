@@ -47,15 +47,15 @@ const Dashboard: React.FC = () => {
     }, [language, t]);
 
   return (
-    <div className="min-h-screen bg-slate-50 p-4 md:p-8">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 p-4 md:p-8 transition-colors">
       <div className="max-w-7xl mx-auto">
         <div className="mb-8">
-            <h2 className="text-3xl font-bold text-slate-900">{t('dashboard.title')}</h2>
-            <p className="text-slate-500">{t('dashboard.subtitle')}</p>
+            <h2 className="text-3xl font-bold text-slate-900 dark:text-slate-100">{t('dashboard.title')}</h2>
+            <p className="text-slate-500 dark:text-slate-400">{t('dashboard.subtitle')}</p>
         </div>
 
         {/* AI Insight Banner */}
-        <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl p-6 text-white mb-8 shadow-lg flex items-start">
+        <div className="bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-800 dark:to-purple-900 rounded-xl p-6 text-white mb-8 shadow-lg flex items-start transition-colors">
             <Sparkles className="h-6 w-6 mr-4 mt-1 flex-shrink-0" />
             <div>
                 <h3 className="font-bold text-lg mb-1">{t('dashboard.aiTitle')}</h3>
@@ -67,8 +67,8 @@ const Dashboard: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
           
           {/* Demand vs Supply Chart */}
-          <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-            <h3 className="text-lg font-bold text-slate-800 mb-6">{t('dashboard.demandChart')}</h3>
+          <div className="bg-white dark:bg-slate-900 p-6 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 transition-colors">
+            <h3 className="text-lg font-bold text-slate-800 dark:text-slate-200 mb-6">{t('dashboard.demandChart')}</h3>
             <div className="h-72">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart
@@ -78,7 +78,7 @@ const Dashboard: React.FC = () => {
                   <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
                   <XAxis dataKey="name" stroke="#64748b" />
                   <YAxis stroke="#64748b" />
-                  <Tooltip contentStyle={{ backgroundColor: '#fff', borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
+                  <Tooltip contentStyle={{ backgroundColor: '#1e293b', color: '#fff', borderRadius: '8px', border: 'none' }} />
                   <Legend />
                   <Bar dataKey="demand" fill="#059669" name={t('dashboard.demandLabel')} radius={[4, 4, 0, 0]} />
                   <Bar dataKey="supply" fill="#94a3b8" name={t('dashboard.supplyLabel')} radius={[4, 4, 0, 0]} />
@@ -87,9 +87,9 @@ const Dashboard: React.FC = () => {
             </div>
           </div>
 
-          {/* Seasonal Trends Line Chart (NEW) */}
-           <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-            <h3 className="text-lg font-bold text-slate-800 mb-6">{t('dashboard.seasonalChart')}</h3>
+          {/* Seasonal Trends Line Chart */}
+           <div className="bg-white dark:bg-slate-900 p-6 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 transition-colors">
+            <h3 className="text-lg font-bold text-slate-800 dark:text-slate-200 mb-6">{t('dashboard.seasonalChart')}</h3>
             <div className="h-72">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart
@@ -99,7 +99,7 @@ const Dashboard: React.FC = () => {
                   <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
                   <XAxis dataKey="name" stroke="#64748b" />
                   <YAxis stroke="#64748b" />
-                  <Tooltip contentStyle={{ backgroundColor: '#fff', borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
+                  <Tooltip contentStyle={{ backgroundColor: '#1e293b', color: '#fff', borderRadius: '8px', border: 'none' }} />
                   <Legend />
                   <Line type="monotone" dataKey="Video" stroke="#ef4444" strokeWidth={2} dot={false} />
                   <Line type="monotone" dataKey="SMM" stroke="#3b82f6" strokeWidth={2} dot={false} />
@@ -111,9 +111,8 @@ const Dashboard: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Geographic Distribution */}
-            <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 lg:col-span-1">
-                <h3 className="text-lg font-bold text-slate-800 mb-6">{t('dashboard.geoChart')}</h3>
+            <div className="bg-white dark:bg-slate-900 p-6 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 lg:col-span-1 transition-colors">
+                <h3 className="text-lg font-bold text-slate-800 dark:text-slate-200 mb-6">{t('dashboard.geoChart')}</h3>
                 <div className="h-64">
                 <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
@@ -138,26 +137,25 @@ const Dashboard: React.FC = () => {
                 </div>
             </div>
 
-            {/* Quick Stats Grid */}
              <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="bg-white p-6 rounded-xl shadow-sm border-l-4 border-emerald-500 flex flex-col justify-center">
-                    <div className="text-sm text-slate-500 font-medium uppercase">{t('dashboard.avgRate')}</div>
-                    <div className="text-3xl font-bold text-slate-900 mt-2">18,500 ₸</div>
+                <div className="bg-white dark:bg-slate-900 p-6 rounded-xl shadow-sm border-l-4 border-emerald-500 dark:border-slate-800 flex flex-col justify-center transition-colors">
+                    <div className="text-sm text-slate-500 dark:text-slate-400 font-medium uppercase">{t('dashboard.avgRate')}</div>
+                    <div className="text-3xl font-bold text-slate-900 dark:text-slate-100 mt-2">18,500 ₸</div>
                     <div className="text-xs text-green-600 mt-1">↑ 12% since last month</div>
                 </div>
-                <div className="bg-white p-6 rounded-xl shadow-sm border-l-4 border-blue-500 flex flex-col justify-center">
-                    <div className="text-sm text-slate-500 font-medium uppercase">{t('dashboard.activeProjects')}</div>
-                    <div className="text-3xl font-bold text-slate-900 mt-2">1,240</div>
+                <div className="bg-white dark:bg-slate-900 p-6 rounded-xl shadow-sm border-l-4 border-blue-500 dark:border-slate-800 flex flex-col justify-center transition-colors">
+                    <div className="text-sm text-slate-500 dark:text-slate-400 font-medium uppercase">{t('dashboard.activeProjects')}</div>
+                    <div className="text-3xl font-bold text-slate-900 dark:text-slate-100 mt-2">1,240</div>
                     <div className="text-xs text-blue-600 mt-1">Active Deals</div>
                 </div>
-                <div className="bg-white p-6 rounded-xl shadow-sm border-l-4 border-purple-500 flex flex-col justify-center">
-                    <div className="text-sm text-slate-500 font-medium uppercase">{t('dashboard.newFreelancers')}</div>
-                    <div className="text-3xl font-bold text-slate-900 mt-2">+85</div>
+                <div className="bg-white dark:bg-slate-900 p-6 rounded-xl shadow-sm border-l-4 border-purple-500 dark:border-slate-800 flex flex-col justify-center transition-colors">
+                    <div className="text-sm text-slate-500 dark:text-slate-400 font-medium uppercase">{t('dashboard.newFreelancers')}</div>
+                    <div className="text-3xl font-bold text-slate-900 dark:text-slate-100 mt-2">+85</div>
                     <div className="text-xs text-purple-600 mt-1">Joined this week</div>
                 </div>
-                 <div className="bg-white p-6 rounded-xl shadow-sm border-l-4 border-orange-500 flex flex-col justify-center">
-                    <div className="text-sm text-slate-500 font-medium uppercase">Total Deals (2024)</div>
-                    <div className="text-3xl font-bold text-slate-900 mt-2">8,450</div>
+                 <div className="bg-white dark:bg-slate-900 p-6 rounded-xl shadow-sm border-l-4 border-orange-500 dark:border-slate-800 flex flex-col justify-center transition-colors">
+                    <div className="text-sm text-slate-500 dark:text-slate-400 font-medium uppercase">Total Deals (2024)</div>
+                    <div className="text-3xl font-bold text-slate-900 dark:text-slate-100 mt-2">8,450</div>
                     <div className="text-xs text-orange-600 mt-1">Total volume: 540M ₸</div>
                 </div>
             </div>

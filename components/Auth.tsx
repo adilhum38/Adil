@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { User, UserRole, City } from '../types';
@@ -31,7 +32,6 @@ const Auth: React.FC<AuthProps> = ({ onComplete }) => {
         setError('User not found. Try registering.');
       }
     } else {
-      // Register Logic
       if (!name || !email) {
         setError('Please fill all fields');
         return;
@@ -44,7 +44,7 @@ const Auth: React.FC<AuthProps> = ({ onComplete }) => {
         email,
         role,
         avatar: `https://ui-avatars.com/api/?name=${name}&background=0D8ABC&color=fff`,
-        city: City.ALMATY, // Default
+        city: City.ALMATY,
         rating: 5.0,
         reviewCount: 0,
         completedProjects: 0,
@@ -60,13 +60,13 @@ const Auth: React.FC<AuthProps> = ({ onComplete }) => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4">
-      <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-xl shadow-lg">
+    <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950 px-4 transition-colors">
+      <div className="max-w-md w-full space-y-8 bg-white dark:bg-slate-900 p-8 rounded-3xl shadow-lg border border-transparent dark:border-slate-800 transition-colors">
         <div className="text-center">
-          <h2 className="mt-6 text-3xl font-extrabold text-slate-900">
+          <h2 className="mt-6 text-3xl font-black text-slate-900 dark:text-slate-100 tracking-tight">
             {isLogin ? t('auth.signInTitle') || 'Sign in' : t('auth.createAccount') || 'Create Account'}
           </h2>
-          <p className="mt-2 text-sm text-slate-600">
+          <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
             {isLogin ? t('auth.welcomeBack') || 'Welcome back to the hub' : t('auth.joinCommunity') || 'Join the community'}
           </p>
         </div>
@@ -75,11 +75,11 @@ const Auth: React.FC<AuthProps> = ({ onComplete }) => {
           <div className="rounded-md shadow-sm -space-y-px">
             {!isLogin && (
               <div className="mb-4">
-                <label className="block text-sm font-medium text-slate-700 mb-1">{t('auth.fullName') || 'Full Name'}</label>
+                <label className="block text-sm font-black text-slate-700 dark:text-slate-300 mb-1 uppercase tracking-widest">{t('auth.fullName') || 'Full Name'}</label>
                 <input
                   type="text"
                   required
-                  className="appearance-none relative block w-full px-3 py-2 border border-slate-300 placeholder-slate-500 text-slate-900 rounded-md focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm"
+                  className="appearance-none relative block w-full px-4 py-3 border border-slate-300 dark:border-slate-700 placeholder-slate-500 text-slate-900 dark:text-slate-100 rounded-xl bg-white dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all"
                   placeholder="John Doe"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
@@ -87,22 +87,22 @@ const Auth: React.FC<AuthProps> = ({ onComplete }) => {
               </div>
             )}
             <div className="mb-4">
-              <label className="block text-sm font-medium text-slate-700 mb-1">{t('auth.email') || 'Email'}</label>
+              <label className="block text-sm font-black text-slate-700 dark:text-slate-300 mb-1 uppercase tracking-widest">{t('auth.email') || 'Email'}</label>
               <input
                 type="email"
                 required
-                className="appearance-none relative block w-full px-3 py-2 border border-slate-300 placeholder-slate-500 text-slate-900 rounded-md focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm"
+                className="appearance-none relative block w-full px-4 py-3 border border-slate-300 dark:border-slate-700 placeholder-slate-500 text-slate-900 dark:text-slate-100 rounded-xl bg-white dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all"
                 placeholder="email@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <div className="mb-4">
-              <label className="block text-sm font-medium text-slate-700 mb-1">{t('auth.password') || 'Password'}</label>
+              <label className="block text-sm font-black text-slate-700 dark:text-slate-300 mb-1 uppercase tracking-widest">{t('auth.password') || 'Password'}</label>
               <input
                 type="password"
                 required
-                className="appearance-none relative block w-full px-3 py-2 border border-slate-300 placeholder-slate-500 text-slate-900 rounded-md focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm"
+                className="appearance-none relative block w-full px-4 py-3 border border-slate-300 dark:border-slate-700 placeholder-slate-500 text-slate-900 dark:text-slate-100 rounded-xl bg-white dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all"
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -111,40 +111,43 @@ const Auth: React.FC<AuthProps> = ({ onComplete }) => {
           </div>
 
           {!isLogin && (
-             <div className="flex items-center justify-center space-x-4 mb-4">
-                <button
-                    type="button"
-                    onClick={() => setRole(UserRole.FREELANCER)}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium border ${role === UserRole.FREELANCER ? 'bg-emerald-50 border-emerald-500 text-emerald-700' : 'border-slate-200 text-slate-500'}`}
-                >
-                    {t('auth.iAmFreelancer') || 'I am a Freelancer'}
-                </button>
-                <button
-                    type="button"
-                    onClick={() => setRole(UserRole.CLIENT)}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium border ${role === UserRole.CLIENT ? 'bg-emerald-50 border-emerald-500 text-emerald-700' : 'border-slate-200 text-slate-500'}`}
-                >
-                    {t('auth.iAmClient') || 'I am a Client'}
-                </button>
+             <div className="flex flex-col space-y-3 mb-4">
+                <p className="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest text-center">I want to...</p>
+                <div className="flex items-center justify-center space-x-3">
+                    <button
+                        type="button"
+                        onClick={() => setRole(UserRole.FREELANCER)}
+                        className={`flex-1 px-4 py-3 rounded-xl text-xs font-black uppercase tracking-widest border-2 transition-all ${role === UserRole.FREELANCER ? 'bg-emerald-50 dark:bg-emerald-950/30 border-emerald-500 text-emerald-700 dark:text-emerald-400' : 'border-slate-100 dark:border-slate-800 text-slate-400'}`}
+                    >
+                        {t('auth.iAmFreelancer') || 'Freelance'}
+                    </button>
+                    <button
+                        type="button"
+                        onClick={() => setRole(UserRole.CLIENT)}
+                        className={`flex-1 px-4 py-3 rounded-xl text-xs font-black uppercase tracking-widest border-2 transition-all ${role === UserRole.CLIENT ? 'bg-emerald-50 dark:bg-emerald-950/30 border-emerald-500 text-emerald-700 dark:text-emerald-400' : 'border-slate-100 dark:border-slate-800 text-slate-400'}`}
+                    >
+                        {t('auth.iAmClient') || 'Hire'}
+                    </button>
+                </div>
              </div>
           )}
 
-          {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+          {error && <p className="text-red-500 text-xs font-bold text-center animate-pulse">{error}</p>}
 
           <div>
             <button
               type="submit"
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500"
+              className="w-full flex justify-center py-4 px-4 border border-transparent text-sm font-black uppercase tracking-widest rounded-xl text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none transition-all shadow-lg shadow-emerald-100 dark:shadow-none"
             >
               {isLogin ? t('auth.signIn') || 'Sign In' : t('auth.signUp') || 'Sign Up'}
             </button>
           </div>
         </form>
         
-        <div className="text-center">
+        <div className="text-center pt-4 border-t border-slate-50 dark:border-slate-800">
             <button 
                 onClick={() => setIsLogin(!isLogin)}
-                className="text-sm text-emerald-600 hover:text-emerald-500 font-medium"
+                className="text-sm text-emerald-600 dark:text-emerald-500 hover:underline font-bold"
             >
                 {isLogin ? t('auth.needAccount') || 'Need an account? Sign up' : t('auth.haveAccount') || 'Have an account? Sign in'}
             </button>
