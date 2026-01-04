@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Menu, X, Briefcase, Users, BarChart2, LogIn, LogOut, Home, Sun, Moon } from 'lucide-react';
+import { Menu, X, Briefcase, Users, BarChart2, LogIn, LogOut, Home, Sun, Moon, MessageSquare } from 'lucide-react';
 import { APP_NAME } from '../constants';
 import { useLanguage, Language } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
@@ -49,7 +49,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentView, setView }) => {
           </div>
 
           {/* Desktop Nav */}
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="hidden md:flex items-center space-x-1 lg:space-x-4">
             {navItems.map((item) => (
               <button
                 key={item.id}
@@ -64,6 +64,21 @@ const Navbar: React.FC<NavbarProps> = ({ currentView, setView }) => {
                 <span>{item.label}</span>
               </button>
             ))}
+
+            {isAuthenticated && (
+                <button
+                    onClick={() => setView('messages')}
+                    className={`relative flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-150 ${
+                        currentView === 'messages'
+                        ? 'text-emerald-600 bg-emerald-50 dark:bg-emerald-950/30'
+                        : 'text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-slate-50 dark:hover:bg-slate-800'
+                    }`}
+                >
+                    <MessageSquare size={18} />
+                    <span>{t('nav.messages') || 'Messages'}</span>
+                    <span className="absolute top-2 right-2 w-2 h-2 bg-emerald-500 rounded-full"></span>
+                </button>
+            )}
 
             {isAuthenticated && user ? (
                 <div className="flex items-center space-x-3 pl-4 border-l border-slate-200 dark:border-slate-700">
@@ -154,6 +169,19 @@ const Navbar: React.FC<NavbarProps> = ({ currentView, setView }) => {
                 <span>{item.label}</span>
               </button>
             ))}
+            {isAuthenticated && (
+              <button
+                onClick={() => handleNavClick('messages')}
+                className={`flex items-center space-x-3 w-full px-3 py-3 rounded-md text-base font-medium ${
+                  currentView === 'messages' 
+                    ? 'bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400' 
+                    : 'text-slate-600 dark:text-slate-400'
+                }`}
+              >
+                <MessageSquare size={18} />
+                <span>{t('nav.messages') || 'Messages'}</span>
+              </button>
+            )}
             <hr className="my-2 border-slate-100 dark:border-slate-800" />
             {isAuthenticated ? (
               <>

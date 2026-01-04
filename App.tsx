@@ -8,16 +8,24 @@ import Dashboard from './components/Dashboard';
 import Profile from './components/Profile';
 import Auth from './components/Auth';
 import CommunityFeed from './components/CommunityFeed';
+import Messages from './components/Messages';
 import { LanguageProvider } from './context/LanguageContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ThemeProvider, useTheme } from './context/ThemeContext';
+import { User } from './types';
 
 const MainApp: React.FC = () => {
   const [currentView, setCurrentView] = useState<string>('home');
-  const { isAuthenticated, user } = useAuth();
+  const [targetChatUser, setTargetChatUser] = useState<User | null>(null);
+  const { isAuthenticated } = useAuth();
 
   const handleAuthComplete = () => {
     setCurrentView('home');
+  };
+
+  const navigateToMessages = (recipient: User) => {
+    setTargetChatUser(recipient);
+    setCurrentView('messages');
   };
 
   const renderView = () => {
@@ -29,27 +37,33 @@ const MainApp: React.FC = () => {
               onFindWork={() => setCurrentView('jobs')} 
               onFindTalent={() => setCurrentView('freelancers')} 
             />
-            <CommunityFeed />
+            <CommunityFeed onMessageAuthor={navigateToMessages} />
           </div>
         );
       case 'jobs':
-        return <JobBoard />;
+        return <JobBoard onMessageClient={navigateToMessages} />;
       case 'freelancers':
-        return <FreelancerDirectory />;
+        return <FreelancerDirectory onMessageFreelancer={navigateToMessages} />;
       case 'dashboard':
         return <Dashboard />;
       case 'profile':
         return isAuthenticated ? <Profile /> : <Auth onComplete={handleAuthComplete} />;
+      case 'messages':
+        return isAuthenticated ? (
+          <Messages initialRecipient={targetChatUser} onClearRecipient={() => setTargetChatUser(null)} />
+        ) : (
+          <Auth onComplete={handleAuthComplete} />
+        );
       case 'auth':
         return <Auth onComplete={handleAuthComplete} />;
       default:
-        return <CommunityFeed />;
+        return <CommunityFeed onMessageAuthor={navigateToMessages} />;
     }
   };
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col transition-colors duration-300">
-      <Navbar currentView={currentView} setView={setCurrentView} />
+      <Navbar currentView={currentView} setView={(v) => { setCurrentView(v); setTargetChatUser(null); }} />
       <main className="flex-grow">
         {renderView()}
       </main>

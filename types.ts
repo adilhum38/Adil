@@ -79,6 +79,15 @@ export interface Job {
   authorId?: string;
 }
 
+export interface Comment {
+    id: string;
+    authorId: string;
+    authorName: string;
+    authorAvatar: string;
+    content: string;
+    createdAt: string;
+}
+
 export interface Post {
   id: string;
   authorId: string;
@@ -88,8 +97,18 @@ export interface Post {
   content: string;
   likes: number;
   comments: number;
+  commentList?: Comment[];
   createdAt: string; // ISO date
   isLikedByCurrentUser?: boolean;
+}
+
+export interface Message {
+    id: string;
+    senderId: string;
+    receiverId: string;
+    content: string;
+    sharedPostId?: string;
+    createdAt: string;
 }
 
 export interface StatData {

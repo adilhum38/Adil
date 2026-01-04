@@ -1,13 +1,13 @@
 
-import { Job, User, Post } from '../types';
+import { Job, User, Post, Message, Comment } from '../types';
 import { MOCK_FREELANCERS, MOCK_JOBS, MOCK_POSTS } from '../constants';
 
-// Keys for LocalStorage
 const USERS_KEY = 'fhkz_users';
 const JOBS_KEY = 'fhkz_jobs';
 const POSTS_KEY = 'fhkz_posts';
+const MESSAGES_KEY = 'fhkz_messages';
 const CURRENT_USER_KEY = 'fhkz_current_user';
-const PORTFOLIO_LIKES_KEY = 'fhkz_portfolio_likes'; // format: { [userId]: string[] (itemIds) }
+const PORTFOLIO_LIKES_KEY = 'fhkz_portfolio_likes';
 
 class MockDatabase {
   constructor() {
@@ -23,6 +23,9 @@ class MockDatabase {
     }
     if (!localStorage.getItem(POSTS_KEY)) {
       localStorage.setItem(POSTS_KEY, JSON.stringify(MOCK_POSTS));
+    }
+    if (!localStorage.getItem(MESSAGES_KEY)) {
+        localStorage.setItem(MESSAGES_KEY, JSON.stringify([]));
     }
     if (!localStorage.getItem(PORTFOLIO_LIKES_KEY)) {
       localStorage.setItem(PORTFOLIO_LIKES_KEY, JSON.stringify({}));
@@ -44,6 +47,39 @@ class MockDatabase {
     return data ? JSON.parse(data) : [];
   }
 
+  getMessages(userId: string): Message[] {
+      const data = localStorage.getItem(MESSAGES_KEY);
+      const all: Message[] = data ? JSON.parse(data) : [];
+      return all.filter(m => m.receiverId === userId || m.senderId === userId);
+  }
+
+  getChatHistory(userId: string, otherId: string): Message[] {
+      const all = this.getMessages(userId);
+      return all.filter(m => 
+          (m.senderId === userId && m.receiverId === otherId) || 
+          (m.senderId === otherId && m.receiverId === userId)
+      ).sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+  }
+
+  getConversations(userId: string): { user: User, lastMessage: Message }[] {
+      const messages = this.getMessages(userId);
+      const conversationsMap = new Map<string, Message>();
+      
+      messages.forEach(m => {
+          const otherId = m.senderId === userId ? m.receiverId : m.senderId;
+          const existing = conversationsMap.get(otherId);
+          if (!existing || new Date(m.createdAt) > new Date(existing.createdAt)) {
+              conversationsMap.set(otherId, m);
+          }
+      });
+
+      const users = this.getUsers();
+      return Array.from(conversationsMap.entries()).map(([otherId, lastMessage]) => {
+          const otherUser = users.find(u => u.id === otherId) || { id: otherId, name: 'Unknown User', avatar: '' } as User;
+          return { user: otherUser, lastMessage };
+      }).sort((a, b) => new Date(b.lastMessage.createdAt).getTime() - new Date(a.lastMessage.createdAt).getTime());
+  }
+
   saveUser(user: User): void {
     const users = this.getUsers();
     const index = users.findIndex(u => u.id === user.id);
@@ -54,7 +90,6 @@ class MockDatabase {
     }
     localStorage.setItem(USERS_KEY, JSON.stringify(users));
     
-    // If updating current user, update session too
     const currentUser = this.getCurrentUser();
     if (currentUser && currentUser.id === user.id) {
       localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
@@ -63,7 +98,7 @@ class MockDatabase {
 
   addJob(job: Job): void {
     const jobs = this.getJobs();
-    jobs.unshift(job); // Add to top
+    jobs.unshift(job);
     localStorage.setItem(JOBS_KEY, JSON.stringify(jobs));
   }
 
@@ -74,11 +109,43 @@ class MockDatabase {
     return post;
   }
 
+  updatePost(postId: string, content: string): void {
+      const posts = this.getPosts();
+      const post = posts.find(p => p.id === postId);
+      if (post) {
+          post.content = content;
+          localStorage.setItem(POSTS_KEY, JSON.stringify(posts));
+      }
+  }
+
+  deletePost(postId: string): void {
+      const posts = this.getPosts();
+      const filtered = posts.filter(p => p.id !== postId);
+      localStorage.setItem(POSTS_KEY, JSON.stringify(filtered));
+  }
+
+  addComment(postId: string, comment: Comment): void {
+      const posts = this.getPosts();
+      const post = posts.find(p => p.id === postId);
+      if (post) {
+          if (!post.commentList) post.commentList = [];
+          post.commentList.push(comment);
+          post.comments = post.commentList.length;
+          localStorage.setItem(POSTS_KEY, JSON.stringify(posts));
+      }
+  }
+
+  sendMessage(message: Message): void {
+      const data = localStorage.getItem(MESSAGES_KEY);
+      const all: Message[] = data ? JSON.parse(data) : [];
+      all.push(message);
+      localStorage.setItem(MESSAGES_KEY, JSON.stringify(all));
+  }
+
   likePost(postId: string, userId: string): void {
     const posts = this.getPosts();
     const post = posts.find(p => p.id === postId);
     if (post) {
-      // Toggle like logic simplified for mock
       if (post.isLikedByCurrentUser) {
         post.likes--;
         post.isLikedByCurrentUser = false;
@@ -103,11 +170,9 @@ class MockDatabase {
 
     const index = userLikes[userId].indexOf(itemId);
     if (index > -1) {
-      // Unlike
       userLikes[userId].splice(index, 1);
       item.likes = Math.max(0, (item.likes || 0) - 1);
     } else {
-      // Like
       userLikes[userId].push(itemId);
       item.likes = (item.likes || 0) + 1;
     }

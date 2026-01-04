@@ -17,6 +17,7 @@ const translations = {
       freelancers: 'Find Talent',
       dashboard: 'Market Stats',
       profile: 'Profile',
+      messages: 'Messages',
       login: 'Log In',
       logout: 'Log Out'
     },
@@ -50,7 +51,12 @@ const translations = {
       trendingSubtitle: "Trending based on activity",
       loginToPost: "Log in to post updates",
       projects: "projects",
-      follow: "Follow"
+      follow: "Follow",
+      edit: "Edit",
+      delete: "Delete",
+      confirmDelete: "Are you sure you want to delete this post?",
+      comment: "Comment",
+      send: "Send"
     },
     jobs: {
       headerTitle: "Creative Jobs in Kazakhstan",
@@ -129,6 +135,7 @@ const translations = {
       freelancers: 'Мамандар',
       dashboard: 'Статистика',
       profile: 'Профиль',
+      messages: 'Хабарламалар',
       login: 'Кіру',
       logout: 'Шығу'
     },
@@ -162,7 +169,12 @@ const translations = {
       trendingSubtitle: "Белсенділік бойынша трендте",
       loginToPost: "Жазу үшін жүйеге кіріңіз",
       projects: "жоба",
-      follow: "Жазылу"
+      follow: "Жазылу",
+      edit: "Өңдеу",
+      delete: "Өшіру",
+      confirmDelete: "Бұл жазбаны өшіргіңіз келетініне сенімдісіз бе?",
+      comment: "Пікір",
+      send: "Жіберу"
     },
     jobs: {
       headerTitle: "Қазақстандағы Креативті Жұмыстар",
@@ -241,6 +253,7 @@ const translations = {
       freelancers: 'Специалисты',
       dashboard: 'Статистика',
       profile: 'Профиль',
+      messages: 'Сообщения',
       login: 'Войти',
       logout: 'Выйти'
     },
@@ -274,7 +287,12 @@ const translations = {
       trendingSubtitle: "В тренде по активности",
       loginToPost: "Войдите, чтобы писать",
       projects: "проектов",
-      follow: "Подписаться"
+      follow: "Подписаться",
+      edit: "Изменить",
+      delete: "Удалить",
+      confirmDelete: "Вы уверены, что хотите удалить эту ветку?",
+      comment: "Комментарий",
+      send: "Отправить"
     },
     jobs: {
       headerTitle: "Креативные вакансии в Казахстане",
@@ -307,7 +325,7 @@ const translations = {
       hireFor: "Нанять за",
       message: "Написать",
       clients: "Клиенты и Кейсы",
-      portfolioTab: "Портфолио",
+      portfolioTab: "Portfolio",
       reviewsTab: "Отзывы",
       noReviews: "Отзывов пока нет."
     },

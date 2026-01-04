@@ -7,7 +7,11 @@ import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
 import { db } from '../services/mockDatabase';
 
-const FreelancerDirectory: React.FC = () => {
+interface DirectoryProps {
+    onMessageFreelancer: (user: User) => void;
+}
+
+const FreelancerDirectory: React.FC<DirectoryProps> = ({ onMessageFreelancer }) => {
   const { t } = useLanguage();
   const [searchTerm, setSearchTerm] = useState('');
   const [filterCity, setFilterCity] = useState<string>('All');
@@ -245,6 +249,7 @@ const FreelancerDirectory: React.FC = () => {
                     user={selectedProfile} 
                     onClose={() => setSelectedProfile(null)} 
                     onUpdate={refreshFreelancers}
+                    onMessageUser={onMessageFreelancer}
                 />
             )}
         </div>
@@ -252,7 +257,7 @@ const FreelancerDirectory: React.FC = () => {
   );
 };
 
-const ProfileModal: React.FC<{ user: User; onClose: () => void; onUpdate: () => void }> = ({ user, onClose, onUpdate }) => {
+const ProfileModal: React.FC<{ user: User; onClose: () => void; onUpdate: () => void, onMessageUser: (u: User) => void }> = ({ user, onClose, onUpdate, onMessageUser }) => {
     const [activeTab, setActiveTab] = useState<'grid' | 'reviews'>('grid');
     const [hired, setHired] = useState(false);
     const [selectedWork, setSelectedWork] = useState<PortfolioItem | null>(null);
@@ -267,7 +272,7 @@ const ProfileModal: React.FC<{ user: User; onClose: () => void; onUpdate: () => 
 
     const handleMessage = (e: React.MouseEvent) => {
         e.stopPropagation();
-        alert(`Redirecting to chat with ${user.username}... (Feature coming soon)`);
+        onMessageUser(user);
     };
 
     const handleLikeItem = (e: React.MouseEvent, item: PortfolioItem) => {
@@ -540,7 +545,7 @@ const ProfileModal: React.FC<{ user: User; onClose: () => void; onUpdate: () => 
                                     );
                                 })()}
                                 <button 
-                                    onClick={handleHire}
+                                    onClick={handleMessage}
                                     className="bg-emerald-500 text-white px-6 py-3 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-emerald-400 transition-all shadow-lg shadow-emerald-500/20"
                                 >
                                     Work with Me

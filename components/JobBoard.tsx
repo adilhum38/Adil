@@ -1,14 +1,18 @@
 
 import React, { useState, useEffect } from 'react';
 import { CURRENCY_SYMBOL } from '../constants';
-import { Category, City, Job } from '../types';
-import { MapPin, Clock, Sparkles, Filter, CheckCircle2, X } from 'lucide-react';
+import { Category, City, Job, User } from '../types';
+import { MapPin, Clock, Sparkles, Filter, CheckCircle2, X, MessageSquare } from 'lucide-react';
 import { generateJobDescription } from '../services/geminiService';
 import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
 import { db } from '../services/mockDatabase';
 
-const JobBoard: React.FC = () => {
+interface JobBoardProps {
+    onMessageClient: (user: User) => void;
+}
+
+const JobBoard: React.FC<JobBoardProps> = ({ onMessageClient }) => {
   const { t, language } = useLanguage();
   const { isAuthenticated, user } = useAuth();
   const [jobs, setJobs] = useState<Job[]>([]);
@@ -56,6 +60,19 @@ const JobBoard: React.FC = () => {
     const updated = new Set(appliedJobs).add(jobId);
     setAppliedJobs(updated);
     localStorage.setItem('applied_jobs', JSON.stringify(Array.from(updated)));
+  };
+
+  const handleMessageClient = (authorId?: string) => {
+    if (!isAuthenticated) {
+        alert("Please login to message clients.");
+        return;
+    }
+    if (!authorId) {
+        alert("Client contact info not available.");
+        return;
+    }
+    const client = db.getUsers().find(u => u.id === authorId);
+    if (client) onMessageClient(client);
   };
 
   const handlePostJob = () => {
@@ -185,21 +202,30 @@ const JobBoard: React.FC = () => {
                                 {t('jobs.posted')} {job.postedAt}
                             </div>
                         </div>
-                        <button 
-                            disabled={appliedJobs.has(job.id)}
-                            onClick={() => handleApply(job.id)}
-                            className={`w-full sm:w-auto px-6 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center justify-center space-x-2 ${
-                                appliedJobs.has(job.id) 
-                                ? 'bg-emerald-50 dark:bg-emerald-950/20 text-emerald-600 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-900/40' 
-                                : 'bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 hover:bg-emerald-600 dark:hover:bg-emerald-500 shadow-md hover:shadow-emerald-100'
-                            }`}
-                        >
-                            {appliedJobs.has(job.id) ? (
-                                <><CheckCircle2 size={16} /> <span>Applied</span></>
-                            ) : (
-                                t('jobs.apply')
-                            )}
-                        </button>
+                        <div className="flex items-center space-x-3 w-full sm:w-auto">
+                            <button 
+                                onClick={() => handleMessageClient(job.authorId || (job.clientName === 'Coffeedose KZ' ? 'f1' : undefined))}
+                                className="p-2.5 rounded-xl text-slate-400 hover:text-emerald-600 border border-slate-200 dark:border-slate-700 hover:border-emerald-500 transition-all"
+                                title="Message Client"
+                            >
+                                <MessageSquare size={18} />
+                            </button>
+                            <button 
+                                disabled={appliedJobs.has(job.id)}
+                                onClick={() => handleApply(job.id)}
+                                className={`flex-1 sm:flex-none px-6 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center justify-center space-x-2 ${
+                                    appliedJobs.has(job.id) 
+                                    ? 'bg-emerald-50 dark:bg-emerald-950/20 text-emerald-600 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-900/40' 
+                                    : 'bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 hover:bg-emerald-600 dark:hover:bg-emerald-500 shadow-md hover:shadow-emerald-100'
+                                }`}
+                            >
+                                {appliedJobs.has(job.id) ? (
+                                    <><CheckCircle2 size={16} /> <span>Applied</span></>
+                                ) : (
+                                    t('jobs.apply')
+                                )}
+                            </button>
+                        </div>
                     </div>
                   </div>
                 </div>
